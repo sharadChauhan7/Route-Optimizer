@@ -1,0 +1,46 @@
+  {citiesData.map((city) => (
+          <div key={city.name}>
+            {/* Location Marker */}
+            <Marker latitude={city.latitude} longitude={city.longitude}>
+              <div
+                className="bg-[#0a0a0a] border-1 border-white rounded-full flex items-center justify-center shadow-md cursor-pointer"
+                style={{
+                  height: `${markerSize}px`,
+                  width: `${markerSize}px`,
+                }} // Dynamically adjust marker size
+                onClick={() =>
+                  setSelectedCity(
+                    selectedCity?.name === city.name ? null : city
+                  )
+                } // Toggle Popup
+              >
+                <img
+                  className="h-6 w-6"
+                  src="/location.png"
+                  alt="Location Marker"
+                />
+              </div>
+            </Marker>
+            {selectedCity?.name === city.name && (
+              <Popup
+                latitude={city.latitude}
+                longitude={city.longitude}
+                closeButton={false}
+                closeOnClick={true}
+                onClose={() => setSelectedCity(null)}
+                anchor="right"
+                className="!bg-transparent !shadow-none border-none p-0 m-0" // Fix border issue
+                offset={[10, -20]} // Adjust positioning
+              >
+                <div className="p-0 m-0"> 
+                  {/* Custom MapMarker Component */}
+                  <MapMarker
+                    location={city.name}
+                    imageSrc={"/toronto.webp"}
+                    reviews={120}
+                  />
+                </div>
+              </Popup>
+            )}
+          </div>
+        ))}
