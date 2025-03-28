@@ -6,6 +6,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import FunctionBox from "./FunctionBox"; 
 import MapMarker from "./MapMarker";
 import {optimizeDeliveryPath} from "../util/main";
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import RoomIcon from '@mui/icons-material/Room';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -59,11 +61,16 @@ const MapComponent = () => {
   async function optimizePath(val){
     const num = parseInt(val);
     const userLocation = {lat:27.4924,lng:77.6737};
-    let routes = await optimizeDeliveryPath(num,markedPlace,userLocation);
-    console.log(routes);
-    setGeoJsonRoutes(routes);
+    let res = await optimizeDeliveryPath(num,markedPlace,userLocation);
+    console.log(res);
+    setGeoJsonRoutes(res.routes);
+    setMarkedPlace(res.clusters);
   }
 
+  function clearPath(){
+    setGeoJsonRoutes([]);
+    setMarkedPlace([]);
+  }
 
   return (
     <div className="relative w-screen h-screen">
@@ -78,7 +85,7 @@ const MapComponent = () => {
         }}
       >
       </div>
-      <FunctionBox optimizePath={(val)=>{optimizePath(val)}}/>
+      <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/>
 
       {/* Map */}
       <Map
@@ -88,7 +95,6 @@ const MapComponent = () => {
         mapboxAccessToken={MAPBOX_TOKEN}
         mapStyle="mapbox://styles/sharadsinghcha-cs22/cm6s7km2j014n01r5h6te59x4"
         onClick={(evt)=>{handleMarkerClick(evt)}}
-        // onViewportChange={(newViewPort) => setViewPort(newViewPort)}
         onMove={evt => setViewPort(evt.viewState)}
 
         className="w-full h-full"
@@ -101,11 +107,7 @@ const MapComponent = () => {
                   width: `${markerSize}px`,
                 }} // Dynamically adjust marker size
               >
-                <img
-                  className="h-6 w-6"
-                  src="/location.png"
-                  alt="Location Marker"
-                />
+                <EmojiEmotionsIcon className = "h-6 w-6"/>
               </div>
             </Marker> }
         {markedPlace.length>0 && markedPlace.map((place,index)=>(
@@ -117,11 +119,7 @@ const MapComponent = () => {
                 width: `${markerSize}px`,
               }} // Dynamically adjust marker size
             >
-              <img
-                className="h-6 w-6"
-                src="/location.png"
-                alt="Location Marker"
-              />
+            {place.centroidIndex||place.centroidIndex==0 ?<span className="text-xl font-semibold">{place.centroidIndex}</span>:<RoomIcon  className = "h-6 w-6"/>}
             </div>
           </Marker>
         ))}
@@ -154,7 +152,7 @@ const MapComponent = () => {
                 type="line"
                 paint={{
                     "line-color": route.properties.color,
-                    "line-width": 3,
+                    "line-width": 4,
                 }}
             />
         </Source>

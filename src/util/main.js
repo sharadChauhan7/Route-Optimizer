@@ -79,7 +79,7 @@ export const optimizeDeliveryPath = async (k,deliveryPoints,userLocation)=>{
             });
         }
     }
-    return routes;
+    return {clusters,routes};
 }
 function kMeansClustering(points, k) {
     let centroids = getRandomCentroids(k, points);
