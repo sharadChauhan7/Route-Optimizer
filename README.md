@@ -28,8 +28,8 @@ A simple and efficient React-based frontend application that finds the optimized
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/sharadChauhan7/Route-Optimizer.git
+cd ROUTE_OPTMIZER
 
 # 2. Install dependencies
 npm install
