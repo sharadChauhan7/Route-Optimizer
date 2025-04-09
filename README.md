@@ -5,7 +5,6 @@ A simple and efficient React-based frontend application that finds the optimized
 ## 🌐 Live Demo
 
 🔗 [View Live on Netlify](https://newshortcut.netlify.app/)  
-*(Replace the above link with your actual deployed URL)*
 
 ---
 
@@ -13,7 +12,6 @@ A simple and efficient React-based frontend application that finds the optimized
 
 ![Screenshot 1](public/screen1.png)  
 ![Screenshot 2](public/screen2.png)  
-*(Make sure these images exist in the `public/` folder and update the names if necessary)*
 
 ---
 
@@ -71,7 +69,7 @@ npm run dev
 
 ## 👨‍💻 Author
 
-Made with 💻 by [Your Name](https://github.com/your-username)
+Made with 💻 by [Sharad Singh Chauhan](https://github.com/sharadChauhan7)
 
 ---
 
