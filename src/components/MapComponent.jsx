@@ -1,13 +1,12 @@
 import React, { useState ,useEffect} from "react";
-// import ReactMapGL, { Marker, Popup,Source,Layer } from "react-map-gl";
 import Map,{ Marker, Popup,Source,Layer } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-// import MapSidebar from "./MapSidebar";
 import FunctionBox from "./FunctionBox"; 
 import MapMarker from "./MapMarker";
 import {optimizeDeliveryPath} from "../util/main";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import RoomIcon from '@mui/icons-material/Room';
+import SearchBar from './SerachBar';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -78,14 +77,13 @@ const MapComponent = () => {
       <div
         style={{
           position: "absolute",
-          // top: "80px", // Adjust based on Navbar height
-          // left: "20px",
           width: "350px", // Adjust width as needed
           zIndex: 10,
         }}
       >
       </div>
-      <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/>
+      {/* <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/> */}
+      <SearchBar/>
 
       {/* Map */}
       <Map
@@ -123,28 +121,6 @@ const MapComponent = () => {
             </div>
           </Marker>
         ))}
-        {/* {citiesData.cities.map((city, index) => (
-          <Marker
-            key={index}
-            latitude={city.latitude}
-            longitude={city.longitude}
-          >
-            <div
-              className=" border-1 border-[#21bc06] bg-[#39ff14] rounded-full flex items-center justify-center shadow-md cursor-pointer"
-              style={{
-                height: `${markerSize}px`,
-                width: `${markerSize}px`,
-              }} // Dynamically adjust marker size
-              onClick={() => setSelectedCity(city)}
-            >
-              <img
-                className="h-6 w-6"
-                src="/location.png"
-                alt="Location Marker"
-              />
-            </div>
-          </Marker>
-        ))} */}
       {geoJsonRoutes.length>0 && geoJsonRoutes.map((route, index) => (
         <Source key={index} type="geojson" data={route}>
             <Layer
