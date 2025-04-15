@@ -7,7 +7,7 @@ import {optimizeDeliveryPath} from "../util/main";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import RoomIcon from '@mui/icons-material/Room';
 import SearchBar from './SerachBar';
-
+import MarkedLocation from "./MarkedLocation";
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const MapComponent = () => {
@@ -36,7 +36,6 @@ const MapComponent = () => {
       if (data.routes.length > 0) {
         setRoute(data.routes[0].geometry);
       }
-      
     };
     setViewPort((prev) => ({
       ...prev,
@@ -72,19 +71,20 @@ const MapComponent = () => {
   }
 
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-screen h-screen ">
       {/* Sidebar */}
-      <div
+      {/* <div
         style={{
           position: "absolute",
           width: "350px", // Adjust width as needed
           zIndex: 10,
         }}
       >
-      </div>
+      </div> */}
       {/* <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/> */}
-      <SearchBar/>
+        <SearchBar/>
 
+        <MarkedLocation/>
       {/* Map */}
       <Map
         {...viewPort}

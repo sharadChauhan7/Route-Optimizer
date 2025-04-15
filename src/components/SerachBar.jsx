@@ -35,6 +35,10 @@ function SerachBar() {
             console.log(err);
         }
     };
+    function handleSuggestion(name,place){
+        console.log(name+" "+ place);
+        setlocation(name);
+    }
 
     return (
         <div className='absolute z-10  py-8 bg-transparent w-full flex flex-col justify-center items-center '>
@@ -42,7 +46,7 @@ function SerachBar() {
                 <input type="text" value={location} onChange={(e)=>{setlocation(e.target.value)}} placeholder='Search' className='w-xl text-white bg-gray-600 border-2 text-xl border-green-600 rounded-4xl px-5 py-3 focus:border-green-400 focus:outline focus:outline-green-400' />
                 {searchLocation && <div className='bg-gray-600 w-xl overflow-hidden rounded-3xl border-2 border-green-600 mt-3'>
                     {searchLocation.suggestions.map((location, idx) => {
-                        return <div key={uuidv4()} className='border-t  first:border-none py-2 hover:bg-gray-500 border-green-600 px-5'>
+                        return <div key={uuidv4()} onClick={()=>{handleSuggestion(location.name,location.place_formatted)}} className='border-t  first:border-none py-2 hover:bg-gray-500 border-green-600 px-5'>
                             <h2 className="text-xl font-semibold text-gray-200">{location.name}</h2>
                             <h4 className=' font-medium text-gray-400'>{location.place_formatted}</h4>
                         </div>
