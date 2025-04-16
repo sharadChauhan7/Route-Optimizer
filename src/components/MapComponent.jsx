@@ -8,17 +8,23 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import RoomIcon from '@mui/icons-material/Room';
 import SearchBar from './SerachBar';
 import MarkedLocation from "./MarkedLocation";
+import {reverseGeocode} from "../util/mapboxapi";
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const MapComponent = () => {
-  let citiesData = [{}];
   let [markedPlace, setMarkedPlace] = useState([]);
+  let [markedPlaceInfo, setMarkedPlaceInfo] = useState([]);
+
   let [pointA, setPointA] = useState([77.6737,27.4924]);
   let [pointB, setPointB] = useState([77.6737,27.4924]);
   const [route, setRoute] = useState(null);
 
-  function handleMarkerClick(evt) {
+ async function handleMarkerClick(evt) {
         const { lng, lat } = evt.lngLat; 
+        // Call for retrival api of mapbox
+        let obj=await reverseGeocode(lng,lat);
+        console.log(obj);
+        setMarkedPlaceInfo((prev)=>[...prev,obj]);
         setMarkedPlace((prev)=>[...prev,{lat:lat,lng:lng}]);
   }
 
@@ -72,19 +78,11 @@ const MapComponent = () => {
 
   return (
     <div className="relative w-screen h-screen ">
-      {/* Sidebar */}
-      {/* <div
-        style={{
-          position: "absolute",
-          width: "350px", // Adjust width as needed
-          zIndex: 10,
-        }}
-      >
-      </div> */}
-      {/* <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/> */}
+      <div className='absolute z-10  py-8 bg-transparent w-full flex justify-between mx-5 items-start '>
+        <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/>
         <SearchBar/>
-
-        <MarkedLocation/>
+      </div>
+        <MarkedLocation markedPlaceInfo={markedPlaceInfo}/>
       {/* Map */}
       <Map
         {...viewPort}

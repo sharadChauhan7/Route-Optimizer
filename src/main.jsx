@@ -7,13 +7,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <>
     <Toaster position="top-center" expand visibleToasts={3} toastOptions={{
-    unstyled: false,
-    classNames: {
-      toast: 'p-3',
-    },
-  }}/>
+      unstyled: false,
+      classNames: {
+        toast: 'p-3',
+      },
+    }}/>
     <App />
-  </StrictMode>,
+    </>
 )
