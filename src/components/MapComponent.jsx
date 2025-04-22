@@ -25,7 +25,12 @@ const MapComponent = () => {
         let obj=await reverseGeocode(lng,lat);
         console.log(obj);
         setMarkedPlaceInfo((prev)=>[...prev,obj]);
-        setMarkedPlace((prev)=>[...prev,{lat:lat,lng:lng}]);
+        setMarkedPlace((prev)=>[...prev,{id:obj.id,lat:lat,lng:lng}]);
+  }
+
+  function removeMarkedPlace(id){
+    setMarkedPlace((prev)=>prev.filter((place)=>place.id!=id));
+    setMarkedPlaceInfo((prev)=>prev.filter((place)=>place.id!=id));
   }
 
   const [viewPort, setViewPort] = useState({
@@ -82,7 +87,7 @@ const MapComponent = () => {
         <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/>
         <SearchBar/>
       </div>
-        <MarkedLocation markedPlaceInfo={markedPlaceInfo}/>
+        <MarkedLocation markedPlaceInfo={markedPlaceInfo} handleDelete={removeMarkedPlace}/>
       {/* Map */}
       <Map
         {...viewPort}

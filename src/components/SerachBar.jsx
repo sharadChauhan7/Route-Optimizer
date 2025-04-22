@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {toast} from 'sonner'
 import axios from 'axios'
 function SerachBar() {
-    // searchLocation = JSON.parse(searchLocation);
-    // console.log(searchLocation);
 
     const [searchLocation,setSearchLocation] = useState("");
     const [location, setlocation] = useState("");
@@ -29,6 +27,7 @@ function SerachBar() {
         let url = `${import.meta.env.VITE_MAPBOX_SEARCH_API}${location}&access_token=${import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}&session_token=${ 'de11723e-2676-428c-943d-fa7554b85dd8'+import.meta.env.VITE_MAPBOX_CATEGORY}&proximity=77.59560985353959%2C27.60290895561135`;
         let result = await axios.get(url);
         setSearchLocation(result.data);
+
         }
         catch(err){
             toast.error("Can not Fetch Suggestions");
@@ -38,6 +37,7 @@ function SerachBar() {
     function handleSuggestion(name,place){
         console.log(name+" "+ place);
         setlocation(name);
+        // Retrive the data for this and mark the location
     }
 
     return (
