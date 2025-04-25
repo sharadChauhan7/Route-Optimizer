@@ -1,8 +1,6 @@
 import React, { useState ,useEffect} from "react";
 import Map,{ Marker, Popup,Source,Layer } from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import FunctionBox from "./FunctionBox"; 
-import MapMarker from "./MapMarker";
 import {optimizeDeliveryPath} from "../util/main";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import RoomIcon from '@mui/icons-material/Room';
@@ -12,6 +10,7 @@ import {reverseGeocode} from "../util/mapboxapi";
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const MapComponent = () => {
+  const mapRef = React.useRef();
   let [markedPlace, setMarkedPlace] = useState([]);
   let [markedPlaceInfo, setMarkedPlaceInfo] = useState([]);
 
@@ -26,6 +25,16 @@ const MapComponent = () => {
         console.log(obj);
         setMarkedPlaceInfo((prev)=>[...prev,obj]);
         setMarkedPlace((prev)=>[...prev,{id:obj.id,lat:lat,lng:lng}]);
+        setViewPort((prev) => ({
+          ...prev,
+          longitude: lng,
+          latitude: lat,
+        }));
+        mapRef.current?.flyTo({
+          center: [lng, lat],
+          zoom: 13,
+          duration: 1400,
+        });
   }
 
   function removeMarkedPlace(id){
@@ -52,7 +61,6 @@ const MapComponent = () => {
       ...prev,
       longitude: pointB[0],
       latitude: pointB[1],
-      transitionDuration: 500,
     }));
 
     fetchRoute();
@@ -79,18 +87,25 @@ const MapComponent = () => {
   function clearPath(){
     setGeoJsonRoutes([]);
     setMarkedPlace([]);
+    setMarkedPlaceInfo([]);
+    mapRef.current.flyTo({
+      center: [77.6737, 27.4924],
+      zoom: 13,
+      duration: 1400,
+    })
   }
 
   return (
     <div className="relative w-screen h-screen ">
       <div className='absolute z-10  py-8 bg-transparent w-full flex justify-between mx-5 items-start '>
         <FunctionBox optimizePath={(val)=>{optimizePath(val)}} clearPath={clearPath}/>
-        <SearchBar/>
+        <SearchBar setMarkedPlace={setMarkedPlace} setMarkedPlaceInfo={ setMarkedPlaceInfo} map={mapRef} setViewPort={setViewPort} />
       </div>
         <MarkedLocation markedPlaceInfo={markedPlaceInfo} handleDelete={removeMarkedPlace}/>
       {/* Map */}
       <Map
         {...viewPort}
+        ref={mapRef}
         width="100vw"
         height="100vh"
         mapboxAccessToken={MAPBOX_TOKEN}
